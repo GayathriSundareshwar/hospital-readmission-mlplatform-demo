@@ -1,0 +1,22 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Spark
+metastore_db/
+spark-warehouse/
+
+# ML
+mlruns/
+models/
+artifacts/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+
+# Logs
+*.log
