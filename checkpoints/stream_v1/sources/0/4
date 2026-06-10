@@ -1,0 +1,4 @@
+v1
+{"path":"file:///Users/gayus/Drive_D_Work/My_Learnings/healthcare-ml-platform/data/stream_input/appointment_event_1781069380_1.json","timestamp":1781069380891,"batchId":4}
+{"path":"file:///Users/gayus/Drive_D_Work/My_Learnings/healthcare-ml-platform/data/stream_input/appointment_event_1781069382_2.json","timestamp":1781069382895,"batchId":4}
+{"path":"file:///Users/gayus/Drive_D_Work/My_Learnings/healthcare-ml-platform/data/stream_input/appointment_event_1781069384_3.json","timestamp":1781069384901,"batchId":4}

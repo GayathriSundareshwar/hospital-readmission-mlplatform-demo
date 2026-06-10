@@ -1,17 +1,19 @@
 from pathlib import Path
 
-import mlflow.pyfunc
+import mlflow.sklearn
 import pandas as pd
 from pyspark.sql import SparkSession
 
 
 BASE_DIR = Path(__file__).resolve().parents[3]
-print("Base directory:", BASE_DIR)
+
 GOLD_PATH = BASE_DIR / "artifacts" / "gold_appointments"
 PREDICTIONS_PATH = BASE_DIR / "artifacts" / "batch_predictions"
 
 MODEL_NAME = "NoShowPredictionModel"
 MODEL_URI = f"models:/{MODEL_NAME}/latest"
+
+THRESHOLD = 0.30
 
 
 def create_spark_session():
@@ -53,15 +55,17 @@ if __name__ == "__main__":
     id_cols = pdf[["PatientId", "AppointmentID"]]
     model_input = pdf.drop(columns=["PatientId", "AppointmentID"])
 
-    model = mlflow.pyfunc.load_model(MODEL_URI)
+    model = mlflow.sklearn.load_model(MODEL_URI)
 
-    predictions = model.predict(model_input)
+    no_show_probabilities = model.predict_proba(model_input)[:, 1]
+    predicted_no_show = (no_show_probabilities >= THRESHOLD).astype(int)
 
     results_pdf = pd.concat(
         [
             id_cols.reset_index(drop=True),
             model_input.reset_index(drop=True),
-            pd.Series(predictions, name="predicted_no_show"),
+            pd.Series(no_show_probabilities, name="no_show_probability"),
+            pd.Series(predicted_no_show, name="predicted_no_show"),
         ],
         axis=1,
     )
@@ -72,6 +76,7 @@ if __name__ == "__main__":
 
     print("Batch inference completed")
     print("Prediction rows:", predictions_df.count())
-    predictions_df.show(10, truncate=False)
+    print(f"Threshold used: {THRESHOLD}")
+    predictions_df.show(20, truncate=False)
 
     spark.stop()
