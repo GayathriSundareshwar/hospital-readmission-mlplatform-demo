@@ -1,0 +1,17 @@
+.git
+.gitignore
+
+.venv
+__pycache__
+.pytest_cache
+
+checkpoints
+data/stream_input
+data/stream_output
+
+*.pyc
+*.pyo
+*.DS_Store
+
+requirements/dev.txt
+requirements/training.txt

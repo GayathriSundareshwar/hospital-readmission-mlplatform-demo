@@ -1,0 +1,4 @@
+-r training.txt
+pytest
+black
+ruff

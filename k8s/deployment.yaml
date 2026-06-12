@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: healthcare-noshow-api
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: healthcare-noshow-api
+  template:
+    metadata:
+      labels:
+        app: healthcare-noshow-api
+    spec:
+      containers:
+        - name: healthcare-noshow-api
+          image: healthcare-noshow-api:v1
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8000
